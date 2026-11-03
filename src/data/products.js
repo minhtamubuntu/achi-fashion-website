@@ -17,10 +17,13 @@ export const products = [
     sizes: [],
     sizeChart: [],
     images: {
-      front: '/assets/hero.webp',
-      back: '',
-      model: []
-    },
+  front: '/assets/xanh-loang-bom-nh-main.webp',
+  back: '/assets/xanh-loang-bom-nh-back.webp',
+  model: [
+    '/assets/xanh-loang-bom-nh-model-front.webp',
+    '/assets/xanh-loang-bom-nh-model-back.webp'
+  ]
+},
     links: {
       messenger: 'https://m.me/aChi.Jeans',
       shopee: ''
