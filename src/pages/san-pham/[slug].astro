@@ -1,4 +1,3 @@
-
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { products } from '../../data/products.js';
@@ -47,7 +46,6 @@ const imageList = [
   description={product.description || `Khám phá ${product.name} tại ACHI FASHION.`}
 >
   <main class="product-detail">
-
     <div class="breadcrumb">
       <a href="/">Trang chủ</a>
       <span>/</span>
@@ -57,32 +55,39 @@ const imageList = [
     </div>
 
     <section class="product-main">
-
-      <div class="gallery">
+      <div class="gallery" data-product-gallery>
         <div class="main-image">
-          <img src={mainImage} alt={product.name} />
+          <img
+            class="main-image-element"
+            src={mainImage}
+            alt={product.name}
+          />
         </div>
 
         {imageList.length > 1 && (
-          <div class="thumbnail-list">
+          <div class="thumbnail-list" aria-label="Ảnh sản phẩm">
             {imageList.map((image, index) => (
-              <div class="thumbnail">
+              <button
+                class:list={['thumbnail-button', { active: index === 0 }]}
+                type="button"
+                data-gallery-image={image}
+                data-gallery-alt={`${product.name} - hình ${index + 1}`}
+                aria-label={`Xem hình sản phẩm ${index + 1}`}
+                aria-pressed={index === 0 ? 'true' : 'false'}
+              >
                 <img
                   src={image}
-                  alt={`${product.name} - hình ${index + 1}`}
+                  alt={`${product.name} - hình thu nhỏ ${index + 1}`}
                   loading="lazy"
                 />
-              </div>
+              </button>
             ))}
           </div>
         )}
       </div>
 
       <div class="product-summary">
-
-        <div class="eyebrow">
-          ACHI FASHION · DENIM COLLECTION
-        </div>
+        <div class="eyebrow">ACHI FASHION · DENIM COLLECTION</div>
 
         <h1>{product.name}</h1>
 
@@ -91,7 +96,6 @@ const imageList = [
         </div>
 
         <div class="price-area">
-
           {hasListPrice && (
             <div class="list-price">
               Giá niêm yết:
@@ -105,47 +109,35 @@ const imageList = [
               <strong>{formatPrice(product.messengerPrice)}</strong>
             </div>
           ) : (
-            <div class="price-pending">
-              Giá bán: Đang cập nhật
-            </div>
+            <div class="price-pending">Giá bán: Đang cập nhật</div>
           )}
-
         </div>
 
         <div class="divider"></div>
 
         <div class="attributes">
-
           <div>
             <span>Giới tính</span>
             <strong>{product.gender || 'Đang cập nhật'}</strong>
           </div>
-
           <div>
             <span>Màu sắc</span>
             <strong>{product.color || 'Đang cập nhật'}</strong>
           </div>
-
           <div>
             <span>Kiểu dáng</span>
             <strong>{product.fit || 'Đang cập nhật'}</strong>
           </div>
-
           <div>
             <span>Chất liệu</span>
             <strong>{product.material || 'Đang cập nhật'}</strong>
           </div>
-
         </div>
 
         <div class="size-note">
           <strong>THÔNG TIN KÍCH THƯỚC</strong>
-
           {product.sizes?.length ? (
-            <p>
-              Kích thước hiện có:
-              {product.sizes.join(', ')}
-            </p>
+            <p>Kích thước hiện có: {product.sizes.join(', ')}</p>
           ) : (
             <p>
               Bảng size và thông số chi tiết đang được ACHI FASHION cập nhật.
@@ -155,7 +147,6 @@ const imageList = [
         </div>
 
         <div class="purchase">
-
           <a
             class="messenger"
             href={messengerUrl}
@@ -173,20 +164,16 @@ const imageList = [
           >
             XEM GIAN HÀNG SHOPEE ↗
           </a>
-
         </div>
 
         <p class="support-note">
           ACHI FASHION · Hỗ trợ tư vấn sản phẩm và chọn size.
         </p>
-
       </div>
     </section>
 
     <section class="description">
-
       <div class="eyebrow">PRODUCT INFORMATION</div>
-
       <h2>THÔNG TIN SẢN PHẨM</h2>
 
       {product.description ? (
@@ -198,19 +185,40 @@ const imageList = [
         </p>
       )}
 
-      {product.material && (
-        <p>Chất liệu: {product.material}</p>
-      )}
-
+      {product.material && <p>Chất liệu: {product.material}</p>}
     </section>
 
     <div class="back-link">
-      <a href="/collections/">
-        ← QUAY LẠI BỘ SƯU TẬP
-      </a>
+      <a href="/collections/">← QUAY LẠI BỘ SƯU TẬP</a>
     </div>
-
   </main>
+
+  <script>
+    document.querySelectorAll('[data-product-gallery]').forEach((gallery) => {
+      const mainImage = gallery.querySelector('.main-image-element');
+      const thumbnails = gallery.querySelectorAll('.thumbnail-button');
+
+      thumbnails.forEach((thumbnail) => {
+        thumbnail.addEventListener('click', () => {
+          const nextImage = thumbnail.getAttribute('data-gallery-image');
+          const nextAlt = thumbnail.getAttribute('data-gallery-alt') || '';
+
+          if (!mainImage || !nextImage) return;
+
+          mainImage.src = nextImage;
+          mainImage.alt = nextAlt;
+
+          thumbnails.forEach((item) => {
+            item.classList.remove('active');
+            item.setAttribute('aria-pressed', 'false');
+          });
+
+          thumbnail.classList.add('active');
+          thumbnail.setAttribute('aria-pressed', 'true');
+        });
+      });
+    });
+  </script>
 
   <style>
     .product-detail {
@@ -256,21 +264,38 @@ const imageList = [
 
     .thumbnail-list {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 10px;
       margin-top: 12px;
     }
 
-    .thumbnail {
+    .thumbnail-button {
+      display: block;
+      padding: 0;
+      border: 1px solid #e5e5e5;
       background: #f3f3f3;
       overflow: hidden;
+      cursor: pointer;
+      opacity: 0.78;
+      transition: border-color 0.2s ease, opacity 0.2s ease;
     }
 
-    .thumbnail img {
+    .thumbnail-button:hover,
+    .thumbnail-button.active {
+      border: 2px solid #41647e;
+      opacity: 1;
+    }
+
+    .thumbnail-button img {
       display: block;
       width: 100%;
       height: auto;
       object-fit: cover;
+    }
+
+    .thumbnail-button:focus-visible {
+      outline: 2px solid #41647e;
+      outline-offset: 3px;
     }
 
     .eyebrow {
@@ -459,6 +484,10 @@ const imageList = [
     @media (max-width: 380px) {
       .purchase {
         grid-template-columns: 1fr;
+      }
+
+      .thumbnail-list {
+        gap: 6px;
       }
     }
   </style>
