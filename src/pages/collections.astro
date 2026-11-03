@@ -451,17 +451,28 @@ const products = [
       transform: scale(1.035);
     }
 
-    .product-label {
-      position: absolute;
-      bottom: 12px;
-      left: 12px;
-      padding: 7px 10px;
-      background: #fff;
-      color: #222;
-      font-size: 9px;
-      font-weight: 800;
-      letter-spacing: 1px;
-    }
+      .product-label {
+  position: absolute;
+  top: auto;
+  right: auto;
+  bottom: 12px;
+  left: 12px;
+  display: inline-block;
+  width: max-content;
+  max-width: calc(100% - 24px);
+  height: auto;
+  box-sizing: border-box;
+  padding: 7px 10px;
+  background: #fff;
+  color: #222;
+  font-size: 9px;
+  font-weight: 800;
+  line-height: 1.4;
+  letter-spacing: 1px;
+  white-space: normal;
+  z-index: 2;
+  pointer-events: none;
+}
 
     .product-info {
       padding: 17px;
