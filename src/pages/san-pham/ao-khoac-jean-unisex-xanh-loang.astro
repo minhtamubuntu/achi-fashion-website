@@ -1,0 +1,341 @@
+
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const product = {
+  name: 'Áo khoác Jean Unisex xanh loang',
+  code: 'Đang cập nhật',
+  image: '/assets/hero.webp',
+  gender: 'Unisex',
+  color: 'Xanh loang',
+  fit: 'Form rộng',
+  material: 'Đang cập nhật',
+  price: 'Đang cập nhật',
+};
+---
+
+<BaseLayout
+  title={`${product.name} | ACHI FASHION`}
+  description="Khám phá áo khoác Jean Unisex xanh loang của ACHI FASHION."
+>
+  <main class="product-detail">
+    <div class="breadcrumb">
+      <a href="/">Trang chủ</a>
+      <span>/</span>
+      <a href="/collections/">Bộ sưu tập</a>
+      <span>/</span>
+      <span>Chi tiết sản phẩm</span>
+    </div>
+
+    <section class="product-main">
+      <div class="gallery">
+        <div class="main-image">
+          <img
+            src={product.image}
+            alt={product.name}
+          />
+        </div>
+        <p class="image-note">
+          Hình ảnh sản phẩm ACHI FASHION
+        </p>
+      </div>
+
+      <div class="product-summary">
+        <div class="eyebrow">ACHI FASHION · DENIM COLLECTION</div>
+
+        <h1>{product.name}</h1>
+
+        <div class="product-code">
+          MÃ SẢN PHẨM: {product.code}
+        </div>
+
+        <div class="price">
+          {product.price}
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="attributes">
+          <div>
+            <span>Giới tính</span>
+            <strong>{product.gender}</strong>
+          </div>
+          <div>
+            <span>Màu sắc</span>
+            <strong>{product.color}</strong>
+          </div>
+          <div>
+            <span>Kiểu dáng</span>
+            <strong>{product.fit}</strong>
+          </div>
+          <div>
+            <span>Chất liệu</span>
+            <strong>{product.material}</strong>
+          </div>
+        </div>
+
+        <div class="size-note">
+          <strong>THÔNG TIN KÍCH THƯỚC</strong>
+          <p>
+            Bảng size và thông số chi tiết đang được ACHI FASHION cập nhật.
+            Vui lòng liên hệ để được tư vấn lựa chọn size phù hợp.
+          </p>
+        </div>
+
+<div class="purchase">
+  <a
+    class="messenger"
+    href="https://m.me/aChi.Jeans"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    NHẮN TIN CHO ACHI
+  </a>
+
+  <a
+    class="shopee"
+    href="https://shopee.vn/achi.jeans.shop"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    XEM GIAN HÀNG SHOPEE ↗
+  </a>
+</div>
+
+        <p class="support-note">
+          ACHI FASHION · Hỗ trợ tư vấn sản phẩm và chọn size.
+        </p>
+      </div>
+    </section>
+
+    <section class="description">
+      <div class="eyebrow">PRODUCT INFORMATION</div>
+      <h2>THÔNG TIN SẢN PHẨM</h2>
+
+      <p>
+        Áo khoác Jean Unisex xanh loang thuộc bộ sưu tập ACHI FASHION,
+        hướng đến phong cách trẻ trung, năng động và dễ phối đồ.
+      </p>
+
+      <p>
+        Thông tin chi tiết về chất liệu, thông số áo và hướng dẫn bảo quản
+        sẽ được cập nhật theo dữ liệu sản phẩm chính thức.
+      </p>
+    </section>
+
+    <div class="back-link">
+      <a href="/collections/">← QUAY LẠI BỘ SƯU TẬP</a>
+    </div>
+  </main>
+
+  <style>
+    .product-detail {
+      max-width: 1180px;
+      margin: auto;
+      padding: 35px 25px 80px;
+      color: #171717;
+      font-family: 'Be Vietnam Pro', Arial, sans-serif;
+    }
+
+    .breadcrumb {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 35px;
+      color: #888;
+      font-size: 11px;
+    }
+
+    .breadcrumb a {
+      color: #555;
+      text-decoration: none;
+    }
+
+    .product-main {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 55px;
+      align-items: start;
+    }
+
+    .main-image {
+      background: #f3f3f3;
+      overflow: hidden;
+    }
+
+    .main-image img {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+
+    .image-note {
+      color: #888;
+      font-size: 10px;
+      margin-top: 10px;
+    }
+
+    .eyebrow {
+      color: #41647e;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 2px;
+    }
+
+    .product-summary h1 {
+      font-family: Oswald, sans-serif;
+      font-size: clamp(30px, 4vw, 43px);
+      line-height: 1.2;
+      font-weight: 600;
+      margin: 15px 0;
+    }
+
+    .product-code {
+      color: #888;
+      font-size: 11px;
+      letter-spacing: 1px;
+    }
+
+    .price {
+      font-size: 21px;
+      font-weight: 800;
+      margin: 25px 0;
+    }
+
+    .divider {
+      height: 1px;
+      background: #e5e5e5;
+      margin: 22px 0;
+    }
+
+    .attributes {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px 15px;
+    }
+
+    .attributes div {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .attributes span {
+      color: #888;
+      font-size: 11px;
+    }
+
+    .attributes strong {
+      font-size: 13px;
+    }
+
+    .size-note {
+      margin-top: 30px;
+      padding: 20px;
+      background: #f5f6f6;
+    }
+
+    .size-note strong {
+      font-size: 11px;
+      letter-spacing: 1px;
+    }
+
+    .size-note p {
+      color: #666;
+      font-size: 12px;
+      line-height: 1.8;
+      margin-bottom: 0;
+    }
+
+    .purchase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 25px;
+    }
+
+    .purchase a {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 48px;
+      padding: 10px;
+      color: white;
+      text-decoration: none;
+      text-align: center;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+
+    .messenger {
+      background: #41647e;
+    }
+
+    .shopee {
+      background: #111;
+    }
+
+    .support-note {
+      color: #888;
+      font-size: 10px;
+      margin-top: 15px;
+    }
+
+    .description {
+      max-width: 780px;
+      margin-top: 80px;
+      padding-top: 35px;
+      border-top: 1px solid #ddd;
+    }
+
+    .description h2 {
+      font-family: Oswald, sans-serif;
+      font-size: 30px;
+      margin: 12px 0 20px;
+    }
+
+    .description p {
+      color: #666;
+      font-size: 13px;
+      line-height: 2;
+    }
+
+    .back-link {
+      margin-top: 45px;
+    }
+
+    .back-link a {
+      color: #222;
+      font-size: 11px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    @media (max-width: 760px) {
+      .product-detail {
+        padding: 25px 16px 55px;
+      }
+
+      .product-main {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+      .product-summary h1 {
+        font-size: 32px;
+      }
+
+      .description {
+        margin-top: 55px;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .purchase {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</BaseLayout>
