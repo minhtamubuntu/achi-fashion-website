@@ -1,131 +1,212 @@
 
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { products } from '../../data/products.js';
 
-const product = {
-  name: 'Áo khoác Jean Unisex xanh loang',
-  code: 'Đang cập nhật',
-  image: '/assets/hero.webp',
-  gender: 'Unisex',
-  color: 'Xanh loang',
-  fit: 'Form rộng',
-  material: 'Đang cập nhật',
-  price: 'Đang cập nhật',
-};
+const slug = 'ao-khoac-jean-unisex-xanh-loang';
+
+const product = products.find((item) => item.slug === slug);
+
+if (!product) {
+  throw new Error(`Không tìm thấy sản phẩm: ${slug}`);
+}
+
+const formatPrice = (price) =>
+  price !== null && price !== undefined
+    ? `${Number(price).toLocaleString('vi-VN')}đ`
+    : '';
+
+const hasListPrice = product.listPrice !== null;
+const hasMessengerPrice = product.messengerPrice !== null;
+
+const messengerUrl =
+  product.links?.messenger || 'https://m.me/aChi.Jeans';
+
+const shopeeUrl =
+  product.links?.shopee || 'https://shopee.vn/achi.jeans.shop';
+
+const mainImage = product.images?.front || '/assets/hero.webp';
+
+const imageList = [
+  mainImage,
+  product.images?.back,
+  ...(product.images?.model || [])
+].filter(Boolean);
 ---
 
 <BaseLayout
   title={`${product.name} | ACHI FASHION`}
-  description="Khám phá áo khoác Jean Unisex xanh loang của ACHI FASHION."
+  description={product.description || `Khám phá ${product.name} tại ACHI FASHION.`}
 >
   <main class="product-detail">
+
     <div class="breadcrumb">
       <a href="/">Trang chủ</a>
       <span>/</span>
       <a href="/collections/">Bộ sưu tập</a>
       <span>/</span>
-      <span>Chi tiết sản phẩm</span>
+      <span>{product.name}</span>
     </div>
 
     <section class="product-main">
+
       <div class="gallery">
         <div class="main-image">
           <img
-            src={product.image}
+            src={mainImage}
             alt={product.name}
           />
         </div>
-        <p class="image-note">
-          Hình ảnh sản phẩm ACHI FASHION
-        </p>
+
+        {imageList.length > 1 && (
+          <div class="thumbnail-list">
+            {imageList.map((image, index) => (
+              <div class="thumbnail">
+                <img
+                  src={image}
+                  alt={`${product.name} - hình ${index + 1}`}
+                  loading="lazy"
+                />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       <div class="product-summary">
-        <div class="eyebrow">ACHI FASHION · DENIM COLLECTION</div>
+
+        <div class="eyebrow">
+          ACHI FASHION · DENIM COLLECTION
+        </div>
 
         <h1>{product.name}</h1>
 
         <div class="product-code">
-          MÃ SẢN PHẨM: {product.code}
+          MÃ SẢN PHẨM: {product.code || 'Đang cập nhật'}
         </div>
 
-        <div class="price">
-          {product.price}
+        <div class="price-area">
+
+          {#if hasListPrice}
+            <div class="list-price">
+              Giá niêm yết:
+              <span>{formatPrice(product.listPrice)}</span>
+            </div>
+          {/if}
+
+          {#if hasMessengerPrice}
+            <div class="messenger-price">
+              {hasListPrice ? 'Giá ưu đãi Messenger' : 'Giá Messenger'}
+              <strong>{formatPrice(product.messengerPrice)}</strong>
+            </div>
+          {:else}
+            <div class="price-pending">
+              Giá bán: Đang cập nhật
+            </div>
+          {/if}
+
         </div>
 
         <div class="divider"></div>
 
         <div class="attributes">
+
           <div>
             <span>Giới tính</span>
-            <strong>{product.gender}</strong>
+            <strong>{product.gender || 'Đang cập nhật'}</strong>
           </div>
+
           <div>
             <span>Màu sắc</span>
-            <strong>{product.color}</strong>
+            <strong>{product.color || 'Đang cập nhật'}</strong>
           </div>
+
           <div>
             <span>Kiểu dáng</span>
-            <strong>{product.fit}</strong>
+            <strong>{product.fit || 'Đang cập nhật'}</strong>
           </div>
+
           <div>
             <span>Chất liệu</span>
-            <strong>{product.material}</strong>
+            <strong>{product.material || 'Đang cập nhật'}</strong>
           </div>
+
         </div>
 
         <div class="size-note">
           <strong>THÔNG TIN KÍCH THƯỚC</strong>
-          <p>
-            Bảng size và thông số chi tiết đang được ACHI FASHION cập nhật.
-            Vui lòng liên hệ để được tư vấn lựa chọn size phù hợp.
-          </p>
+
+          {#if product.sizes?.length}
+            <p>
+              Kích thước hiện có:
+              {product.sizes.join(', ')}
+            </p>
+          {:else}
+            <p>
+              Bảng size và thông số chi tiết đang được ACHI FASHION cập nhật.
+              Vui lòng liên hệ để được tư vấn lựa chọn size phù hợp.
+            </p>
+          {/if}
         </div>
 
-<div class="purchase">
-  <a
-    class="messenger"
-    href="https://m.me/aChi.Jeans"
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    NHẮN TIN CHO ACHI
-  </a>
+        <div class="purchase">
 
-  <a
-    class="shopee"
-    href="https://shopee.vn/achi.jeans.shop"
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    XEM GIAN HÀNG SHOPEE ↗
-  </a>
-</div>
+          <a
+            class="messenger"
+            href={messengerUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            NHẮN TIN CHO ACHI
+          </a>
+
+          <a
+            class="shopee"
+            href={shopeeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            XEM GIAN HÀNG SHOPEE ↗
+          </a>
+
+        </div>
 
         <p class="support-note">
           ACHI FASHION · Hỗ trợ tư vấn sản phẩm và chọn size.
         </p>
+
       </div>
     </section>
 
     <section class="description">
+
       <div class="eyebrow">PRODUCT INFORMATION</div>
+
       <h2>THÔNG TIN SẢN PHẨM</h2>
 
-      <p>
-        Áo khoác Jean Unisex xanh loang thuộc bộ sưu tập ACHI FASHION,
-        hướng đến phong cách trẻ trung, năng động và dễ phối đồ.
-      </p>
+      {#if product.description}
+        <p>{product.description}</p>
+      {:else}
+        <p>
+          Thông tin chi tiết về sản phẩm sẽ được ACHI FASHION cập nhật
+          theo dữ liệu chính thức.
+        </p>
+      {/if}
 
-      <p>
-        Thông tin chi tiết về chất liệu, thông số áo và hướng dẫn bảo quản
-        sẽ được cập nhật theo dữ liệu sản phẩm chính thức.
-      </p>
+      {#if product.material}
+        <p>
+          Chất liệu: {product.material}
+        </p>
+      {/if}
+
     </section>
 
     <div class="back-link">
-      <a href="/collections/">← QUAY LẠI BỘ SƯU TẬP</a>
+      <a href="/collections/">
+        ← QUAY LẠI BỘ SƯU TẬP
+      </a>
     </div>
+
   </main>
 
   <style>
@@ -170,10 +251,23 @@ const product = {
       object-fit: contain;
     }
 
-    .image-note {
-      color: #888;
-      font-size: 10px;
-      margin-top: 10px;
+    .thumbnail-list {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .thumbnail {
+      background: #f3f3f3;
+      overflow: hidden;
+    }
+
+    .thumbnail img {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: cover;
     }
 
     .eyebrow {
@@ -197,10 +291,37 @@ const product = {
       letter-spacing: 1px;
     }
 
-    .price {
-      font-size: 21px;
-      font-weight: 800;
+    .price-area {
       margin: 25px 0;
+    }
+
+    .list-price {
+      color: #888;
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .list-price span {
+      text-decoration: line-through;
+      margin-left: 5px;
+    }
+
+    .messenger-price {
+      color: #41647e;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .messenger-price strong {
+      display: block;
+      color: #171717;
+      font-size: 25px;
+      margin-top: 5px;
+    }
+
+    .price-pending {
+      font-size: 20px;
+      font-weight: 800;
     }
 
     .divider {
