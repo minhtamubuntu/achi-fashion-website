@@ -445,26 +445,39 @@ const displayProducts = products.filter(
       transform: scale(1.035);
     }
 
-    .product-label {
-      position: absolute;
-      bottom: 12px;
-      left: 12px;
-      display: inline-block;
-      width: max-content;
-      max-width: calc(100% - 24px);
-      height: auto;
-      box-sizing: border-box;
-      padding: 7px 10px;
-      background: #fff;
-      color: #222;
-      font-size: 9px;
-      font-weight: 800;
-      line-height: 1.4;
-      letter-spacing: 1px;
-      white-space: normal;
-      z-index: 2;
-      pointer-events: none;
-    }
+
+.product-label {
+  position: absolute !important;
+  top: auto !important;
+  right: auto !important;
+  bottom: 12px !important;
+  left: 12px !important;
+
+  display: inline-block !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: calc(100% - 24px) !important;
+
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+
+  box-sizing: border-box !important;
+  padding: 7px 10px !important;
+
+  background: #fff !important;
+  color: #222 !important;
+
+  font-size: 9px !important;
+  font-weight: 800 !important;
+  line-height: 1.4 !important;
+  letter-spacing: 1px !important;
+
+  white-space: normal !important;
+  z-index: 5 !important;
+  pointer-events: none;
+}
+
 
     .product-info {
       padding: 17px;
