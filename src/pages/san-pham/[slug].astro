@@ -3,21 +3,31 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { products } from '../../data/products.js';
 
-const slug = 'ao-khoac-jean-unisex-xanh-loang';
-
-const product = products.find((item) => item.slug === slug);
-
-if (!product) {
-  throw new Error(`Không tìm thấy sản phẩm: ${slug}`);
+export function getStaticPaths() {
+  return products
+    .filter((product) => product.slug)
+    .map((product) => ({
+      params: {
+        slug: product.slug
+      },
+      props: {
+        product
+      }
+    }));
 }
+
+const { product } = Astro.props;
 
 const formatPrice = (price) =>
   price !== null && price !== undefined
     ? `${Number(price).toLocaleString('vi-VN')}đ`
     : '';
 
-const hasListPrice = product.listPrice !== null;
-const hasMessengerPrice = product.messengerPrice !== null;
+const hasListPrice = product.listPrice !== null &&
+  product.listPrice !== undefined;
+
+const hasMessengerPrice = product.messengerPrice !== null &&
+  product.messengerPrice !== undefined;
 
 const messengerUrl =
   product.links?.messenger || 'https://m.me/aChi.Jeans';
@@ -194,9 +204,7 @@ const imageList = [
       {/if}
 
       {#if product.material}
-        <p>
-          Chất liệu: {product.material}
-        </p>
+        <p>Chất liệu: {product.material}</p>
       {/if}
 
     </section>
