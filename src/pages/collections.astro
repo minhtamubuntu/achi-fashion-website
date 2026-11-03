@@ -1,6 +1,7 @@
 
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { products } from '../data/products.js';
 
 const categories = [
   { id: 'all', name: 'Tất cả sản phẩm', icon: '✦' },
@@ -12,68 +13,9 @@ const categories = [
   { id: 'tshirt', name: 'Áo thun', icon: '▣' },
 ];
 
-const products = [
-  {
-    name: 'Áo khoác Jean Unisex xanh loang',
-    category: 'jean-jacket',
-    code: 'Đang cập nhật',
-    image: '/assets/hero.webp',
-    gender: 'Unisex',
-    color: 'Xanh',
-    fit: 'Form rộng',
-    label: 'SIGNATURE · UNISEX',
-  },
-  {
-    name: 'Áo khoác Jean nam xanh nhạt',
-    category: 'jean-jacket',
-    code: 'Đang cập nhật',
-    image: '/assets/blue-basic.webp',
-    gender: 'Nam',
-    color: 'Xanh',
-    fit: 'Chưa cập nhật',
-    label: "MEN'S DENIM",
-  },
-  {
-    name: 'Áo khoác Kaki trắng Unisex',
-    category: 'kaki',
-    code: 'Đang cập nhật',
-    image: '/assets/kaki-trang-unisex.webp',
-    gender: 'Unisex',
-    color: 'Trắng',
-    fit: 'Chưa cập nhật',
-    label: 'KAKI COLLECTION',
-  },
-  {
-    name: 'Gile xanh Jeans Unisex',
-    category: 'gile',
-    code: 'Đang cập nhật',
-    image: '/assets/gile-xanh-jeans.webp',
-    gender: 'Unisex',
-    color: 'Xanh',
-    fit: 'Chưa cập nhật',
-    label: 'GILE COLLECTION',
-  },
-  {
-    name: 'Quần Jean nam ACHI FASHION',
-    category: 'jeans',
-    code: 'Đang cập nhật',
-    image: '/assets/mens-jeans.webp',
-    gender: 'Nam',
-    color: 'Xanh',
-    fit: 'Chưa cập nhật',
-    label: "MEN'S ESSENTIALS",
-  },
-  {
-    name: 'Quần Short nam ACHI FASHION',
-    category: 'shorts',
-    code: 'Đang cập nhật',
-    image: '/assets/mens-shorts.webp',
-    gender: 'Nam',
-    color: 'Chưa cập nhật',
-    fit: 'Chưa cập nhật',
-    label: 'DAILY ESSENTIALS',
-  },
-];
+const displayProducts = products.filter(
+  (product) => product.status !== 'hidden'
+);
 ---
 
 <BaseLayout
@@ -90,11 +32,19 @@ const products = [
           Những thiết kế dành cho phong cách năng động,
           cá tính và tự tin mỗi ngày.
         </p>
-        <a href="#catalog" class="hero-button">KHÁM PHÁ BỘ SƯU TẬP ↘</a>
+        <a href="#catalog" class="hero-button">
+          KHÁM PHÁ BỘ SƯU TẬP ↘
+        </a>
       </div>
+
       <div class="hero-image">
-        <img src="/assets/hero.webp" alt="Bộ sưu tập áo khoác Jean ACHI FASHION" />
-        <div class="hero-caption">PREMIUM DENIM WEAR · EVERYDAY STYLE</div>
+        <img
+          src="/assets/hero.webp"
+          alt="Bộ sưu tập áo khoác Jean ACHI FASHION"
+        />
+        <div class="hero-caption">
+          PREMIUM DENIM WEAR · EVERYDAY STYLE
+        </div>
       </div>
     </section>
 
@@ -109,7 +59,10 @@ const products = [
         {categories.map((category) => (
           <button
             type="button"
-            class:list={['category-button', { active: category.id === 'all' }]}
+            class:list={[
+              'category-button',
+              { active: category.id === 'all' }
+            ]}
             data-category={category.id}
           >
             <span>{category.icon}</span>
@@ -124,7 +77,10 @@ const products = [
         <div>
           <div class="eyebrow">THE ACHI SELECTION</div>
           <h2>BỘ SƯU TẬP ACHI</h2>
-          <p><span id="product-count">{products.length}</span> sản phẩm giới thiệu</p>
+          <p>
+            <span id="product-count">{displayProducts.length}</span>
+            sản phẩm giới thiệu
+          </p>
         </div>
         <div class="catalog-note">DESIGNED FOR EVERYDAY STYLE</div>
       </div>
@@ -132,7 +88,11 @@ const products = [
       <div class="filters">
         <div class="search-box">
           <span>⌕</span>
-          <input id="product-search" type="search" placeholder="Tìm tên sản phẩm..." />
+          <input
+            id="product-search"
+            type="search"
+            placeholder="Tìm tên sản phẩm..."
+          />
         </div>
 
         <select id="gender-filter" aria-label="Lọc giới tính">
@@ -159,7 +119,7 @@ const products = [
       </div>
 
       <div class="product-grid" id="product-grid">
-        {products.map((product) => (
+        {displayProducts.map((product) => (
           <article
             class="product-card"
             data-category={product.category}
@@ -169,24 +129,48 @@ const products = [
             data-name={product.name.toLowerCase()}
           >
             <div class="product-image">
-              <img src={product.image} alt={product.name} loading="lazy" />
-              <span class="product-label">{product.label}</span>
+              <img
+                src={product.images.front}
+                alt={product.name}
+                loading="lazy"
+              />
+              {product.label && (
+                <span class="product-label">{product.label}</span>
+              )}
             </div>
 
             <div class="product-info">
-              <div class="product-code">MÃ SP: {product.code}</div>
-              <h3>{product.name}</h3>
-              <div class="product-meta">
-                <span>{product.gender}</span>
-                <span>{product.color}</span>
+              <div class="product-code">
+                MÃ SP: {product.code || 'Đang cập nhật'}
               </div>
-              <div class="product-price">Giá bán: Đang cập nhật</div>
+
+              <h3>{product.name}</h3>
+
+              <div class="product-meta">
+                {product.gender && <span>{product.gender}</span>}
+                {product.color && <span>{product.color}</span>}
+              </div>
+
+              <div class="product-price">
+                {product.messengerPrice !== null
+                  ? `Giá Messenger: ${product.messengerPrice.toLocaleString('vi-VN')}đ`
+                  : 'Giá bán: Đang cập nhật'}
+              </div>
 
               <div class="product-actions">
-                <a href="https://www.facebook.com/aChi.Jeans" target="_blank" rel="noopener">
+                <a
+                  href={product.links.messenger || 'https://m.me/aChi.Jeans'}
+                  target="_blank"
+                  rel="noopener"
+                >
                   LIÊN HỆ ACHI
                 </a>
-                <a href="https://shopee.vn/achi.jeans.shop" target="_blank" rel="noopener">
+
+                <a
+                  href="https://shopee.vn/achi.jeans.shop"
+                  target="_blank"
+                  rel="noopener"
+                >
                   SHOPEE ↗
                 </a>
               </div>
@@ -205,8 +189,14 @@ const products = [
     <section class="shop-contact">
       <div class="eyebrow">YOUR STYLE · YOUR CHOICE</div>
       <h2>TÌM KIẾM PHONG CÁCH CỦA BẠN?</h2>
-      <p>Liên hệ ACHI FASHION để được hỗ trợ và tư vấn lựa chọn sản phẩm.</p>
-      <a href="https://www.facebook.com/aChi.Jeans" target="_blank" rel="noopener">
+      <p>
+        Liên hệ ACHI FASHION để được hỗ trợ và tư vấn lựa chọn sản phẩm.
+      </p>
+      <a
+        href="https://www.facebook.com/aChi.Jeans"
+        target="_blank"
+        rel="noopener"
+      >
         KẾT NỐI VỚI ACHI ↗
       </a>
     </section>
@@ -427,6 +417,10 @@ const products = [
       transition: transform 0.2s, box-shadow 0.2s;
     }
 
+    .product-card[hidden] {
+      display: none;
+    }
+
     .product-card:hover {
       transform: translateY(-4px);
       box-shadow: 0 12px 30px #0000000c;
@@ -451,28 +445,26 @@ const products = [
       transform: scale(1.035);
     }
 
-      .product-label {
-  position: absolute;
-  top: auto;
-  right: auto;
-  bottom: 12px;
-  left: 12px;
-  display: inline-block;
-  width: max-content;
-  max-width: calc(100% - 24px);
-  height: auto;
-  box-sizing: border-box;
-  padding: 7px 10px;
-  background: #fff;
-  color: #222;
-  font-size: 9px;
-  font-weight: 800;
-  line-height: 1.4;
-  letter-spacing: 1px;
-  white-space: normal;
-  z-index: 2;
-  pointer-events: none;
-}
+    .product-label {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      display: inline-block;
+      width: max-content;
+      max-width: calc(100% - 24px);
+      height: auto;
+      box-sizing: border-box;
+      padding: 7px 10px;
+      background: #fff;
+      color: #222;
+      font-size: 9px;
+      font-weight: 800;
+      line-height: 1.4;
+      letter-spacing: 1px;
+      white-space: normal;
+      z-index: 2;
+      pointer-events: none;
+    }
 
     .product-info {
       padding: 17px;
@@ -492,6 +484,7 @@ const products = [
 
     .product-meta {
       display: flex;
+      flex-wrap: wrap;
       gap: 8px;
       color: #777;
       font-size: 10px;
