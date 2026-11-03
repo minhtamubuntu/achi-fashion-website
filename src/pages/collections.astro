@@ -128,23 +128,34 @@ const displayProducts = products.filter(
             data-fit={product.fit}
             data-name={product.name.toLowerCase()}
           >
-            <div class="product-image">
+            <a
+              class="product-image product-detail-link"
+              href={`/san-pham/${product.slug}/`}
+              aria-label={`Xem chi tiết ${product.name}`}
+            >
               <img
-                src={product.images.front}
+                src={product.images?.front || '/assets/hero.webp'}
                 alt={product.name}
                 loading="lazy"
               />
               {product.label && (
                 <span class="product-label">{product.label}</span>
               )}
-            </div>
+            </a>
 
             <div class="product-info">
               <div class="product-code">
                 MÃ SP: {product.code || 'Đang cập nhật'}
               </div>
 
-              <h3>{product.name}</h3>
+              <h3>
+                <a
+                  class="product-name-link"
+                  href={`/san-pham/${product.slug}/`}
+                >
+                  {product.name}
+                </a>
+              </h3>
 
               <div class="product-meta">
                 {product.gender && <span>{product.gender}</span>}
@@ -152,14 +163,23 @@ const displayProducts = products.filter(
               </div>
 
               <div class="product-price">
-                {product.messengerPrice !== null
-                  ? `Giá Messenger: ${product.messengerPrice.toLocaleString('vi-VN')}đ`
-                  : 'Giá bán: Đang cập nhật'}
+                {product.listPrice !== null && product.listPrice !== undefined && (
+                  <div class="product-list-price">
+                    Giá niêm yết: <span>{Number(product.listPrice).toLocaleString('vi-VN')}đ</span>
+                  </div>
+                )}
+                {product.messengerPrice !== null && product.messengerPrice !== undefined ? (
+                  <div class="product-messenger-price">
+                    Giá ưu đãi Messenger: <strong>{Number(product.messengerPrice).toLocaleString('vi-VN')}đ</strong>
+                  </div>
+                ) : (
+                  <div class="product-price-pending">Giá bán: Đang cập nhật</div>
+                )}
               </div>
 
               <div class="product-actions">
                 <a
-                  href={product.links.messenger || 'https://m.me/aChi.Jeans'}
+                  href={product.links?.messenger || 'https://m.me/aChi.Jeans'}
                   target="_blank"
                   rel="noopener"
                 >
@@ -167,7 +187,7 @@ const displayProducts = products.filter(
                 </a>
 
                 <a
-                  href="https://shopee.vn/achi.jeans.shop"
+                  href={product.links?.shopee || 'https://shopee.vn/achi.jeans.shop'}
                   target="_blank"
                   rel="noopener"
                 >
@@ -428,9 +448,15 @@ const displayProducts = products.filter(
 
     .product-image {
       position: relative;
+      display: block;
       overflow: hidden;
       background: #f2f2f2;
       aspect-ratio: 4 / 4.6;
+      text-decoration: none;
+    }
+
+    .product-detail-link {
+      color: inherit;
     }
 
     .product-image img {
@@ -495,6 +521,15 @@ const displayProducts = products.filter(
       margin: 9px 0;
     }
 
+    .product-name-link {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .product-name-link:hover {
+      color: #41647e;
+    }
+
     .product-meta {
       display: flex;
       flex-wrap: wrap;
@@ -512,6 +547,31 @@ const displayProducts = products.filter(
       margin-top: 14px;
       font-size: 12px;
       font-weight: 700;
+    }
+
+    .product-list-price {
+      margin-bottom: 5px;
+      color: #888;
+      font-size: 10px;
+      font-weight: 400;
+    }
+
+    .product-list-price span {
+      text-decoration: line-through;
+    }
+
+    .product-messenger-price {
+      color: #41647e;
+      font-size: 11px;
+    }
+
+    .product-messenger-price strong {
+      color: #171717;
+      font-size: 14px;
+    }
+
+    .product-price-pending {
+      color: #171717;
     }
 
     .product-actions {
