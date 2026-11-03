@@ -1,16 +1,708 @@
+
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+const categories = [
+  { id: 'all', name: 'Tất cả sản phẩm', icon: '✦' },
+  { id: 'jean-jacket', name: 'Áo khoác Jean', icon: '◈' },
+  { id: 'kaki', name: 'Áo khoác Kaki', icon: '◇' },
+  { id: 'gile', name: 'Gile', icon: '▤' },
+  { id: 'jeans', name: 'Quần Jean', icon: '✧' },
+  { id: 'shorts', name: 'Quần Short', icon: '▱' },
+  { id: 'tshirt', name: 'Áo thun', icon: '▣' },
+];
+
+const products = [
+  {
+    name: 'Áo khoác Jean Unisex xanh loang',
+    category: 'jean-jacket',
+    code: 'Đang cập nhật',
+    image: '/assets/hero.webp',
+    gender: 'Unisex',
+    color: 'Xanh',
+    fit: 'Form rộng',
+    label: 'SIGNATURE · UNISEX',
+  },
+  {
+    name: 'Áo khoác Jean nam xanh nhạt',
+    category: 'jean-jacket',
+    code: 'Đang cập nhật',
+    image: '/assets/blue-basic.webp',
+    gender: 'Nam',
+    color: 'Xanh',
+    fit: 'Chưa cập nhật',
+    label: "MEN'S DENIM",
+  },
+  {
+    name: 'Áo khoác Kaki trắng Unisex',
+    category: 'kaki',
+    code: 'Đang cập nhật',
+    image: '/assets/kaki-trang-unisex.webp',
+    gender: 'Unisex',
+    color: 'Trắng',
+    fit: 'Chưa cập nhật',
+    label: 'KAKI COLLECTION',
+  },
+  {
+    name: 'Gile xanh Jeans Unisex',
+    category: 'gile',
+    code: 'Đang cập nhật',
+    image: '/assets/gile-xanh-jeans.webp',
+    gender: 'Unisex',
+    color: 'Xanh',
+    fit: 'Chưa cập nhật',
+    label: 'GILE COLLECTION',
+  },
+  {
+    name: 'Quần Jean nam ACHI FASHION',
+    category: 'jeans',
+    code: 'Đang cập nhật',
+    image: '/assets/mens-jeans.webp',
+    gender: 'Nam',
+    color: 'Xanh',
+    fit: 'Chưa cập nhật',
+    label: "MEN'S ESSENTIALS",
+  },
+  {
+    name: 'Quần Short nam ACHI FASHION',
+    category: 'shorts',
+    code: 'Đang cập nhật',
+    image: '/assets/mens-shorts.webp',
+    gender: 'Nam',
+    color: 'Chưa cập nhật',
+    fit: 'Chưa cập nhật',
+    label: 'DAILY ESSENTIALS',
+  },
+];
 ---
-<BaseLayout title="Bộ sưu tập | ACHI FASHION" description="Khám phá các dòng sản phẩm thời trang ACHI FASHION.">
-<main class="shop">
-  <a href="/">← ACHI FASHION</a><p class="kicker">COLLECTIONS</p><h1>Bộ sưu tập ACHI</h1>
-  <p>Giai đoạn đầu, website giới thiệu sản phẩm và điều hướng khách đến gian hàng hoặc kênh tư vấn. Chức năng bán hàng trực tiếp, biến thể màu/size và dữ liệu sản phẩm sẽ được phát triển ở giai đoạn 2.</p>
-  <a class="cta" href="https://shopee.vn/achi.jeans.shop">Khám phá gian hàng Shopee ↗</a>
-</main>
+
+<BaseLayout
+  title="Bộ sưu tập | ACHI FASHION"
+  description="Khám phá bộ sưu tập áo khoác Jean, Kaki, Gile, quần Jean, quần Short và áo thun ACHI FASHION."
+>
+  <main class="shop">
+    <section class="shop-hero">
+      <div class="hero-content">
+        <div class="eyebrow">ACHI FASHION · DENIM SPECIALIST</div>
+        <h1>COLLECTION<br /><span>2026</span></h1>
+        <p>
+          Khám phá thế giới thời trang ACHI FASHION.
+          Những thiết kế dành cho phong cách năng động,
+          cá tính và tự tin mỗi ngày.
+        </p>
+        <a href="#catalog" class="hero-button">KHÁM PHÁ BỘ SƯU TẬP ↘</a>
+      </div>
+      <div class="hero-image">
+        <img src="/assets/hero.webp" alt="Bộ sưu tập áo khoác Jean ACHI FASHION" />
+        <div class="hero-caption">PREMIUM DENIM WEAR · EVERYDAY STYLE</div>
+      </div>
+    </section>
+
+    <section class="category-section" id="catalog">
+      <div class="section-heading">
+        <div class="eyebrow">FIND YOUR STYLE</div>
+        <h2>KHÁM PHÁ DANH MỤC</h2>
+        <p>Lựa chọn dòng sản phẩm phù hợp với phong cách của bạn.</p>
+      </div>
+
+      <div class="category-list">
+        {categories.map((category) => (
+          <button
+            type="button"
+            class:list={['category-button', { active: category.id === 'all' }]}
+            data-category={category.id}
+          >
+            <span>{category.icon}</span>
+            {category.name}
+          </button>
+        ))}
+      </div>
+    </section>
+
+    <section class="catalog-section">
+      <div class="catalog-heading">
+        <div>
+          <div class="eyebrow">THE ACHI SELECTION</div>
+          <h2>BỘ SƯU TẬP ACHI</h2>
+          <p><span id="product-count">{products.length}</span> sản phẩm giới thiệu</p>
+        </div>
+        <div class="catalog-note">DESIGNED FOR EVERYDAY STYLE</div>
+      </div>
+
+      <div class="filters">
+        <div class="search-box">
+          <span>⌕</span>
+          <input id="product-search" type="search" placeholder="Tìm tên sản phẩm..." />
+        </div>
+
+        <select id="gender-filter" aria-label="Lọc giới tính">
+          <option value="">Tất cả giới tính</option>
+          <option value="Nam">Nam</option>
+          <option value="Nữ">Nữ</option>
+          <option value="Unisex">Unisex</option>
+        </select>
+
+        <select id="color-filter" aria-label="Lọc màu sắc">
+          <option value="">Tất cả màu sắc</option>
+          <option value="Xanh">Xanh</option>
+          <option value="Đen">Đen</option>
+          <option value="Trắng">Trắng</option>
+          <option value="Xám">Xám</option>
+        </select>
+
+        <select id="fit-filter" aria-label="Lọc kiểu dáng">
+          <option value="">Tất cả kiểu dáng</option>
+          <option value="Form rộng">Form rộng</option>
+          <option value="Regular">Regular</option>
+          <option value="Croptop">Croptop</option>
+        </select>
+      </div>
+
+      <div class="product-grid" id="product-grid">
+        {products.map((product) => (
+          <article
+            class="product-card"
+            data-category={product.category}
+            data-gender={product.gender}
+            data-color={product.color}
+            data-fit={product.fit}
+            data-name={product.name.toLowerCase()}
+          >
+            <div class="product-image">
+              <img src={product.image} alt={product.name} loading="lazy" />
+              <span class="product-label">{product.label}</span>
+            </div>
+
+            <div class="product-info">
+              <div class="product-code">MÃ SP: {product.code}</div>
+              <h3>{product.name}</h3>
+              <div class="product-meta">
+                <span>{product.gender}</span>
+                <span>{product.color}</span>
+              </div>
+              <div class="product-price">Giá bán: Đang cập nhật</div>
+
+              <div class="product-actions">
+                <a href="https://www.facebook.com/aChi.Jeans" target="_blank" rel="noopener">
+                  LIÊN HỆ ACHI
+                </a>
+                <a href="https://shopee.vn/achi.jeans.shop" target="_blank" rel="noopener">
+                  SHOPEE ↗
+                </a>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <div class="empty-state" id="empty-state" hidden>
+        <div>✦</div>
+        <h3>Chưa tìm thấy sản phẩm</h3>
+        <p>Ông hãy thử thay đổi danh mục hoặc bộ lọc nhé.</p>
+      </div>
+    </section>
+
+    <section class="shop-contact">
+      <div class="eyebrow">YOUR STYLE · YOUR CHOICE</div>
+      <h2>TÌM KIẾM PHONG CÁCH CỦA BẠN?</h2>
+      <p>Liên hệ ACHI FASHION để được hỗ trợ và tư vấn lựa chọn sản phẩm.</p>
+      <a href="https://www.facebook.com/aChi.Jeans" target="_blank" rel="noopener">
+        KẾT NỐI VỚI ACHI ↗
+      </a>
+    </section>
+  </main>
+
+  <style>
+    .shop {
+      color: #171717;
+      font-family: 'Be Vietnam Pro', Arial, sans-serif;
+    }
+
+    .shop-hero {
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      min-height: 450px;
+      background: #f1f1ef;
+    }
+
+    .hero-content {
+      padding: 75px 7%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    .eyebrow {
+      color: #41647e;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 2.5px;
+    }
+
+    .hero-content h1 {
+      font-family: Oswald, sans-serif;
+      font-size: clamp(55px, 7vw, 88px);
+      line-height: 0.98;
+      margin: 20px 0;
+      font-weight: 700;
+    }
+
+    .hero-content h1 span {
+      color: #41647e;
+    }
+
+    .hero-content p {
+      color: #666;
+      font-size: 14px;
+      line-height: 1.9;
+      max-width: 420px;
+    }
+
+    .hero-button {
+      display: inline-block;
+      margin-top: 22px;
+      padding: 15px 24px;
+      background: #111;
+      color: white;
+      text-decoration: none;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .hero-image {
+      position: relative;
+      min-height: 450px;
+      overflow: hidden;
+    }
+
+    .hero-image img {
+      width: 100%;
+      height: 100%;
+      min-height: 450px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .hero-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 18px;
+      color: white;
+      background: linear-gradient(transparent, #0009);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+    }
+
+    .category-section,
+    .catalog-section {
+      max-width: 1250px;
+      margin: auto;
+      padding: 75px 28px;
+    }
+
+    .section-heading {
+      text-align: center;
+    }
+
+    .section-heading h2,
+    .catalog-heading h2 {
+      font-family: Oswald, sans-serif;
+      font-size: clamp(30px, 4vw, 44px);
+      font-weight: 600;
+      margin: 12px 0;
+    }
+
+    .section-heading p,
+    .catalog-heading p {
+      color: #777;
+      font-size: 13px;
+    }
+
+    .category-list {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 35px;
+    }
+
+    .category-button {
+      padding: 13px 18px;
+      border: 1px solid #ddd;
+      background: white;
+      color: #333;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .category-button span {
+      margin-right: 7px;
+      color: #41647e;
+    }
+
+    .category-button:hover,
+    .category-button.active {
+      background: #111;
+      border-color: #111;
+      color: white;
+    }
+
+    .catalog-section {
+      padding-top: 20px;
+    }
+
+    .catalog-heading {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 22px;
+    }
+
+    .catalog-heading h2 {
+      margin-bottom: 5px;
+    }
+
+    .catalog-note {
+      color: #888;
+      font-size: 9px;
+      letter-spacing: 2px;
+    }
+
+    .filters {
+      display: grid;
+      grid-template-columns: 1.5fr repeat(3, 1fr);
+      gap: 12px;
+      margin: 28px 0;
+    }
+
+    .filters select,
+    .search-box {
+      height: 45px;
+      border: 1px solid #ddd;
+      background: white;
+      color: #333;
+      padding: 0 12px;
+      font-family: inherit;
+      font-size: 11px;
+      min-width: 0;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .search-box span {
+      font-size: 20px;
+      color: #41647e;
+    }
+
+    .search-box input {
+      border: 0;
+      outline: none;
+      width: 100%;
+      min-width: 0;
+      font: inherit;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 28px 20px;
+    }
+
+    .product-card {
+      min-width: 0;
+      border: 1px solid #eee;
+      background: white;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px #0000000c;
+    }
+
+    .product-image {
+      position: relative;
+      overflow: hidden;
+      background: #f2f2f2;
+      aspect-ratio: 4 / 4.6;
+    }
+
+    .product-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s;
+    }
+
+    .product-card:hover .product-image img {
+      transform: scale(1.035);
+    }
+
+    .product-label {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      padding: 7px 10px;
+      background: #fff;
+      color: #222;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .product-info {
+      padding: 17px;
+    }
+
+    .product-code {
+      color: #888;
+      font-size: 9px;
+      letter-spacing: 1px;
+    }
+
+    .product-info h3 {
+      font-size: 14px;
+      line-height: 1.5;
+      margin: 9px 0;
+    }
+
+    .product-meta {
+      display: flex;
+      gap: 8px;
+      color: #777;
+      font-size: 10px;
+    }
+
+    .product-meta span {
+      padding: 5px 8px;
+      background: #f5f5f5;
+    }
+
+    .product-price {
+      margin-top: 14px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .product-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px;
+      margin-top: 14px;
+    }
+
+    .product-actions a {
+      padding: 11px 5px;
+      text-align: center;
+      text-decoration: none;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      background: #111;
+      color: white;
+    }
+
+    .product-actions a:first-child {
+      background: #41647e;
+    }
+
+    .empty-state {
+      padding: 60px 20px;
+      text-align: center;
+      background: #f7f7f7;
+    }
+
+    .empty-state[hidden] {
+      display: none;
+    }
+
+    .empty-state h3 {
+      font-family: Oswald, sans-serif;
+      font-size: 25px;
+    }
+
+    .empty-state p {
+      color: #777;
+      font-size: 13px;
+    }
+
+    .shop-contact {
+      text-align: center;
+      padding: 75px 20px;
+      background: #111;
+      color: white;
+    }
+
+    .shop-contact .eyebrow {
+      color: #a9c0d0;
+    }
+
+    .shop-contact h2 {
+      font-family: Oswald, sans-serif;
+      font-size: clamp(28px, 4vw, 42px);
+      margin: 15px 0;
+    }
+
+    .shop-contact p {
+      color: #bbb;
+      font-size: 13px;
+    }
+
+    .shop-contact a {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 15px 25px;
+      background: white;
+      color: #111;
+      font-size: 10px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    @media (max-width: 800px) {
+      .shop-hero {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-content {
+        padding: 55px 25px;
+      }
+
+      .hero-image,
+      .hero-image img {
+        min-height: 300px;
+      }
+
+      .product-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px 10px;
+      }
+
+      .filters {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .search-box {
+        grid-column: 1 / -1;
+      }
+
+      .catalog-note {
+        display: none;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .category-section,
+      .catalog-section {
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+
+      .category-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .category-button {
+        padding: 12px 8px;
+        font-size: 10px;
+      }
+
+      .product-info {
+        padding: 11px;
+      }
+
+      .product-info h3 {
+        font-size: 12px;
+      }
+
+      .product-actions a {
+        font-size: 8px;
+      }
+    }
+  </style>
+
+  <script>
+    const categoryButtons = document.querySelectorAll('.category-button');
+    const productCards = document.querySelectorAll('.product-card');
+    const searchInput = document.querySelector('#product-search');
+    const genderFilter = document.querySelector('#gender-filter');
+    const colorFilter = document.querySelector('#color-filter');
+    const fitFilter = document.querySelector('#fit-filter');
+    const productCount = document.querySelector('#product-count');
+    const emptyState = document.querySelector('#empty-state');
+
+    let selectedCategory = 'all';
+
+    function filterProducts() {
+      const search = searchInput.value.trim().toLowerCase();
+      const gender = genderFilter.value;
+      const color = colorFilter.value;
+      const fit = fitFilter.value;
+      let visibleCount = 0;
+
+      productCards.forEach((card) => {
+        const matchesCategory =
+          selectedCategory === 'all' ||
+          card.dataset.category === selectedCategory;
+
+        const matchesSearch =
+          card.dataset.name.includes(search);
+
+        const matchesGender =
+          !gender || card.dataset.gender === gender;
+
+        const matchesColor =
+          !color || card.dataset.color === color;
+
+        const matchesFit =
+          !fit || card.dataset.fit === fit;
+
+        const visible =
+          matchesCategory &&
+          matchesSearch &&
+          matchesGender &&
+          matchesColor &&
+          matchesFit;
+
+        card.hidden = !visible;
+
+        if (visible) visibleCount++;
+      });
+
+      productCount.textContent = String(visibleCount);
+      emptyState.hidden = visibleCount !== 0;
+    }
+
+    categoryButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        selectedCategory = button.dataset.category;
+
+        categoryButtons.forEach((item) =>
+          item.classList.remove('active')
+        );
+
+        button.classList.add('active');
+        filterProducts();
+      });
+    });
+
+    [searchInput, genderFilter, colorFilter, fitFilter].forEach((control) => {
+      control.addEventListener('input', filterProducts);
+      control.addEventListener('change', filterProducts);
+    });
+  </script>
 </BaseLayout>
-<style>
-.shop{max-width:900px;margin:auto;padding:70px 24px 120px;font-family:'Be Vietnam Pro',Arial,sans-serif}
-.shop>a:first-child{color:#315a78;text-decoration:none;font-size:12px}.kicker{margin-top:55px;color:#315a78;letter-spacing:3px;font-size:11px}
-h1{font-family:Oswald,sans-serif;font-size:clamp(42px,7vw,72px);text-transform:uppercase}
-.shop p{color:#666;line-height:1.9;max-width:650px}.cta{display:inline-block;margin-top:20px;background:#111;color:#fff;padding:15px 22px;text-decoration:none;font-size:11px;font-weight:700}
-</style>
