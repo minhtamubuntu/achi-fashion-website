@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map(post => ({ params: { slug: post.id }, props: { post } }));
+}
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+<BaseLayout title={`${post.data.title} | ACHI FASHION`} description={post.data.description}>
+<article class="article">
+  <a href="/blog/">← Tất cả bài viết</a>
+  <p class="kicker">{post.data.category} · {post.data.pubDate.toLocaleDateString('vi-VN')}</p>
+  <h1>{post.data.title}</h1><p class="lead">{post.data.description}</p>
+  {post.data.cover && <img class="cover" src={post.data.cover} alt={post.data.title} />}
+  <div class="prose"><Content /></div>
+  <a class="endlink" href="/contact/">Cần tư vấn? Kết nối cùng ACHI FASHION ↗</a>
+</article>
+</BaseLayout>
+<style>
+.article{max-width:780px;margin:auto;padding:55px 24px 90px;font-family:'Be Vietnam Pro',Arial,sans-serif;color:#151515}
+.article>a{color:#315a78;text-decoration:none;font-size:12px}.kicker{margin-top:55px;color:#315a78;font-size:11px;letter-spacing:2px}
+h1{font-family:Oswald,sans-serif;font-size:clamp(38px,6vw,62px);line-height:1.1;text-transform:uppercase}
+.lead{font-size:17px;line-height:1.8;color:#666}.cover{width:100%;margin:32px 0;max-height:560px;object-fit:cover}
+.prose{font-size:15px;line-height:1.95;color:#333}.prose h2{font-family:Oswald,sans-serif;font-size:29px;color:#111;margin-top:38px}
+.prose a{color:#315a78}.endlink{display:inline-block;margin-top:45px;border-bottom:1px solid;padding-bottom:8px}
+</style>
