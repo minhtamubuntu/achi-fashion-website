@@ -7,12 +7,8 @@ export function getStaticPaths() {
   return products
     .filter((product) => product.slug)
     .map((product) => ({
-      params: {
-        slug: product.slug
-      },
-      props: {
-        product
-      }
+      params: { slug: product.slug },
+      props: { product }
     }));
 }
 
@@ -23,10 +19,12 @@ const formatPrice = (price) =>
     ? `${Number(price).toLocaleString('vi-VN')}đ`
     : '';
 
-const hasListPrice = product.listPrice !== null &&
+const hasListPrice =
+  product.listPrice !== null &&
   product.listPrice !== undefined;
 
-const hasMessengerPrice = product.messengerPrice !== null &&
+const hasMessengerPrice =
+  product.messengerPrice !== null &&
   product.messengerPrice !== undefined;
 
 const messengerUrl =
@@ -62,10 +60,7 @@ const imageList = [
 
       <div class="gallery">
         <div class="main-image">
-          <img
-            src={mainImage}
-            alt={product.name}
-          />
+          <img src={mainImage} alt={product.name} />
         </div>
 
         {imageList.length > 1 && (
@@ -97,23 +92,23 @@ const imageList = [
 
         <div class="price-area">
 
-          {#if hasListPrice}
+          {hasListPrice && (
             <div class="list-price">
               Giá niêm yết:
               <span>{formatPrice(product.listPrice)}</span>
             </div>
-          {/if}
+          )}
 
-          {#if hasMessengerPrice}
+          {hasMessengerPrice ? (
             <div class="messenger-price">
               {hasListPrice ? 'Giá ưu đãi Messenger' : 'Giá Messenger'}
               <strong>{formatPrice(product.messengerPrice)}</strong>
             </div>
-          {:else}
+          ) : (
             <div class="price-pending">
               Giá bán: Đang cập nhật
             </div>
-          {/if}
+          )}
 
         </div>
 
@@ -146,17 +141,17 @@ const imageList = [
         <div class="size-note">
           <strong>THÔNG TIN KÍCH THƯỚC</strong>
 
-          {#if product.sizes?.length}
+          {product.sizes?.length ? (
             <p>
               Kích thước hiện có:
               {product.sizes.join(', ')}
             </p>
-          {:else}
+          ) : (
             <p>
               Bảng size và thông số chi tiết đang được ACHI FASHION cập nhật.
               Vui lòng liên hệ để được tư vấn lựa chọn size phù hợp.
             </p>
-          {/if}
+          )}
         </div>
 
         <div class="purchase">
@@ -194,18 +189,18 @@ const imageList = [
 
       <h2>THÔNG TIN SẢN PHẨM</h2>
 
-      {#if product.description}
+      {product.description ? (
         <p>{product.description}</p>
-      {:else}
+      ) : (
         <p>
           Thông tin chi tiết về sản phẩm sẽ được ACHI FASHION cập nhật
           theo dữ liệu chính thức.
         </p>
-      {/if}
+      )}
 
-      {#if product.material}
+      {product.material && (
         <p>Chất liệu: {product.material}</p>
-      {/if}
+      )}
 
     </section>
 
